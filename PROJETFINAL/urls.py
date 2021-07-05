@@ -1,134 +1,35 @@
 
 
-from pathlib import Path
-import django_heroku
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+import forum.urls
+from sentimentanalysis.views import *
+import mon_chatbot.urls
+from django.contrib import admin
+from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls.conf import include
+from accounts.views import *
+from mon_chatbot.views import *
+from quizes.views import *
+from GlobalApp.views import *
 
+from django.views.static import serve
+from django.conf.urls.static import url
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home, name='home'),
+    path('',include('accounts.urls',namespace='accounts')),
+    path('', include(forum.urls), name='forum'),
+    path('', include(mon_chatbot.urls), name='chatbot'),
+    path('quize/', QuizListView.as_view(), name='main-view'),
+    path('quize/<pk>/', quiz_view, name='quiz-view'),
+    path('quize/<pk>/save/', save_quiz_view, name='save-view'),
+    path('quize/<pk>/data/', quiz_data_view, name='quiz-data-view'),
+    path('analyser/<id>',AnalyseData, name = 'AnalyseData'),
+    url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!*dv45mm00%s*%l0&r*o-+g&chjgin)6-$f0bz=^%)gf85yeu$'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['127.0.0.1', 'therapy-fps-a-s-2021.herokuapp.coms']
-
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'forum',
-    'accounts',
-    'GlobalApp',
-    'quizes',
-    'results',
-    'questions',
-    'crispy_forms',
-    'mon_chatbot',
-    'sentimentanalysis',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-ROOT_URLCONF = 'PROJETFINAL.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'PROJETFINAL.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PFE_final',
-        'USER': 'postgres',
-        'PASSWORD': 'skious',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.1/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR/'staticfiles'
-
-STATICFILES_DIRS = [
-    BASE_DIR/'static',
-]
-
-django_heroku.settings(locals())
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

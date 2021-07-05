@@ -15,7 +15,7 @@ SECRET_KEY = '!*dv45mm00%s*%l0&r*o-+g&chjgin)6-$f0bz=^%)gf85yeu$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'therapy-fps-a-s-2021.herokuapp.coms']
 
 
 # Application definition

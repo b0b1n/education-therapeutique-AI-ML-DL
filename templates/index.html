@@ -1,0 +1,822 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title> Udoctor </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static ' assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
+    <div class="container d-flex">
+      <div class="contact-info mr-auto">
+        <i class="icofont-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+        <i class="icofont-phone"></i>+212 212 121 112
+        <i class="icofont-google-map"></i>Route Sidi Bouzid BP 4162 Avenue Mohamed Belkhadir, Safi 46000
+      </div>
+      <div class="social-links">
+        <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+        <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+        <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+        <a href="#" class="skype"><i class="icofont-skype"></i></a>
+        <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo mr-auto"><a href="{% url 'home' %}">Udoctor</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="/">Accueil</a></li>
+          {% if request.user.is_authenticated %}
+
+          {% if request.user.is_staff %}
+          <li><a href="#about">à propos</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#departments">Départments</a></li>
+          <li><a href="#doctors">Docteurs</a></li>
+          <li><a href="#contact">Contactez-nous</a></li>
+          {% endif %}
+          {% for exp in experts %}
+          {% ifequal user.id exp.user.id %}
+          <li><a href="{% url 'forum' %}">forum</a></li>
+          {% endifequal %}
+          {% endfor %}
+          {% for pat in patients %}
+          {% ifequal user.id pat.user.id %}
+          <li><a href="{% url 'forum' %}">forum</a></li>
+          <li><a href="{% url 'accounts:profile' %}">Profil</a></li>
+          <li><a href="{% url 'chat' user.id %}">chatbot</a></li>
+					<li><a href="{% url 'AnalyseData' user.id %}">Cheer-up</a></li>
+          <li><a href="{% url 'main-view' %}" style="margin-right: 40px;">Quiz</a></li>
+          {% endifequal %}
+          {% endfor %}
+          {%else%}
+          <li><a href="#about">à propos</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#departments">Départments</a></li>
+          <li><a href="#doctors">Docteurs</a></li>
+          <li><a href="#contact">Contactez-nous</a></li>
+          {% endif %}
+
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'accounts:logout' %}" class="appointment-btn scrollto">Logout</a>
+      {% else %}
+      <a href="{% url 'accounts:login' %}" class="appointment-btn scrollto">login</a>
+      {% endif %}
+
+
+
+      {% if request.user.is_staff %}
+      <a href="{% url 'accounts:register' %}" class="appointment-btn scrollto">Register</a>
+      {% else %}
+
+      {% endif %}
+
+
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex align-items-center">
+    <div class="container">
+      <h1>Bienvenue à Udoctor</h1>
+      <h2>Vous aider. Vous renseigner sur la santé</h2>
+      <a href="#about" class="btn-get-started scrollto">Commencer</a>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="content">
+              <h3>Pourquoi choisir Udoctor?</h3>
+              <p>
+                Le but de la création de notre platforme est de vous aider à vous vous informez à propos de tous ce que
+                vous devez savoir pour rester en bonne santé
+              </p>
+              <div class="text-center">
+                <a href="#" class="more-btn">Savoir plus <i class="bx bx-chevron-right"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 d-flex align-items-stretch">
+            <div class="icon-boxes d-flex flex-column justify-content-center">
+              <div class="row">
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0" style="padding-left: 20px;padding-right: 20px;">
+                    <iconify-icon data-icon="bi-check2-circle" style="font-size: 50px;color:cornflowerblue;">
+                    </iconify-icon>
+                    <br><br><br>
+                    <h4>Offrant :</h4>
+                    <p>Des réponses à vos questions</p>
+                  </div>
+                </div>
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0">
+                    <iconify-icon data-icon="bi-check2-circle" style="font-size: 50px;color:cornflowerblue;">
+                    </iconify-icon>
+                    <br><br><br>
+                    <h4>Offrant :</h4>
+                    <p>Des services de haute qualité</p>
+                  </div>
+                </div>
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box mt-4 mt-xl-0">
+                    <iconify-icon data-icon="bi-check2-circle" style="font-size: 50px;color:cornflowerblue;">
+                    </iconify-icon>
+                    <br><br><br>
+                    <h4>Offrant :</h4>
+                    <p>La sécurité et la confidentialité de vos informations</p>
+                  </div>
+                </div>
+              </div>
+            </div><!-- End .content-->
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch">
+          </div>
+
+          <div
+            class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+            <h3>Qui somme nous ?</h3>
+            <p>Nous sommes une entreprise qui a été créé pour le but d'aider les patients atteints de maladies
+              cardiaques qui rencontrent des problèmes de style de vie en s'adaptant avec leur maladie .</p>
+
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-fingerprint"></i></div>
+              <h4 class="title"><a href="">Créé par :</a></h4>
+              <p class="description"> Sohaib skious et Aymen Maiziz.</p>
+            </div>
+
+            <div class="icon-box">
+              <div class="icon"><span class="iconify" data-icon="bx:bx-map" data-inline="false"
+                  style="font-size: 40px; color: cornflowerblue;"></span></div>
+              <h4 class="title"><a href="">Se trouve à :</a></h4>
+              <p class="description">Notre quartier général se situe à Safi, Maroc.</p>
+            </div>
+
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-atom"></i></div>
+              <h4 class="title"><a href="">Notre but :</a></h4>
+              <p class="description">D'aider le max possible de patients à s'adapter à leur maladie avec un nouveau
+                style de vie. </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="icofont-doctor-alt"></i>
+              <span data-toggle="counter-up">85</span>
+              <p>Docteurs</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+            <div class="count-box">
+              <i class="icofont-patient-bed"></i>
+              <span data-toggle="counter-up">12</span>
+              <p>Départments</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="icofont-laboratory"></i>
+              <span data-toggle="counter-up">6</span>
+              <p>Laboratoires de recherches </p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+            <div class="count-box">
+              <i class="icofont-award"></i>
+              <span data-toggle="counter-up">49</span>
+              <p>Récompenses</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Nos Services</h2>
+          <p>On vous offre l'aide consernant :</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="icon-box">
+              <div class="icon"><i class="icofont-heart-beat"></i></div>
+              <h4><a href="">Maladies cardiovasculaires
+                </a></h4>
+              <p>On partage avec vous les ressources dont vous avez besoin , et aussi on répond à vos questions
+                rapidement</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+            <div class="icon-box">
+              <div class="icon"><i class="icofont-drug"></i></div>
+              <h4><a href="">Éducation thérapeutique </a></h4>
+              <p>On vous aide à savoir comment traiter vos maladies et savoir aussi detecter les symptomes avant qu'une
+                attaque occure. </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+            <div class="icon-box">
+              <div class="icon"><i class="icofont-dna-alt-2"></i></div>
+              <h4><a href="">Nutrition</a></h4>
+              <p>On vous aide à choisir le régime alimentaire qui vous convient , et qui sera spéciale à votre
+                condition. </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+            <div class="icon-box">
+              <div class="icon"><i class="icofont-heartbeat"></i></div>
+              <h4><a href="">Style de vie</a></h4>
+              <p>On vous aide à cohabiter à votre condition , et vivre votre vie quotidienne normalement sans
+                s'inquiéter à avoir des épisodes . </p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4">
+
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+
+    <!-- ======= Departments Section ======= -->
+    <section id="departments" class="departments">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Départments</h2>
+          <p>Notre entreprise a plusieurs départements , comme : Département de Nutrition , département
+            de cardiology , département de kinésithérapie.</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3">
+            <ul class="nav nav-tabs flex-column">
+              <li class="nav-item">
+                <a class="nav-link active show" data-toggle="tab" href="#tab-1">Cardiology</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tab-2">Nutrition</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tab-3">Kinésithérapie</a>
+              </li>
+
+            </ul>
+          </div>
+          <div class="col-lg-9 mt-4 mt-lg-0">
+            <div class="tab-content">
+              <div class="tab-pane active show" id="tab-1">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Cardiology</h3>
+                    <p class="font-italic">La principale fonction du cœur est d'assurer la circulation du sang dans tout
+                      l'organisme</p>
+                    <p>Ce département est dédié pour répondre aux patients qui veulent poser des questions sur les
+                      problèmescardiques qu'ils rencontrent.</p>
+                  </div>
+                  <div class="col-lg-4 text-center order-1 order-lg-2">
+                    <img src="{% static 'assets/img/departments-1.jpg' %}" alt="" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-2">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Nutrition</h3>
+                    <p class="font-italic">La nutrition c'est l'apport alimentaire répondant aux besoins de l'organisme.
+                      Une bonne nutrition – c'est-à-dire un régime adapté et équilibré –</p>
+                    <p>Ce département est dédié à donner aux patients les régimes à suivre pour que leur corps aura les
+                      vitamines , et les proteines .. dont il a besoin</p>
+                  </div>
+                  <div class="col-lg-4 text-center order-1 order-lg-2">
+                    <img src="{% static 'assets/img/departments-2.jpg' %}" alt="" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-3">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Kinésithérapie</h3>
+                    <p class="font-italic">La kinésithérapie est la façon manuelle ou instrumentale, des actes de
+                      massage et de gymnastique médicale, dans le but de prévenir l'altération des capacités
+                      fonctionnelles,</p>
+                    <p>Ce département est dédié pour répondre à toute question par rapport à la physique du patient .
+                    </p>
+                  </div>
+                  <div class="col-lg-4 text-center order-1 order-lg-2">
+                    <img src="{% static 'assets/img/departments-3.jpg' %}" alt="" class="img-fluid">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </section><!-- End Departments Section -->
+
+    <!-- ======= Doctors Section ======= -->
+    <section id="doctors" class="doctors">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Docteurs</h2>
+          <p>Notre équipe est composé de plusieurs docteurs , rencontrez certains d'entre eux.</p>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-6">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-1.jpg' %}" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>Walter White</h4>
+                <span>Président du département du Nutrition</span>
+                <p>32 ans d'experience , s'en charge de assurer l'efficacité des services donnés par l'équipe .</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-2.jpg' %}" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>Sarah Jhonson</h4>
+                <span>Nutritionniste</span>
+                <p>S'en charge des problèmes en rapport avec la nutrition (diabète, allergie ou intolérance
+                  alimentaire, obésité,…).</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-3.jpg' %}" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>William Anderson</h4>
+                <span>Cardiologue</span>
+                <p>S'encharge du suivi des états des patients </p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="{% static 'assets/img/doctors/doctors-4.jpg' %}" class="img-fluid" alt="">
+              </div>
+              <div class="member-info">
+                <h4>Amanda Jepson</h4>
+                <span>Kinésithérapeute</span>
+                <p>S'encharge de l'équipe qui donne le programme de mouvements et du sport à suivre.</p>
+                <div class="social">
+                  <a href=""><i class="ri-twitter-fill"></i></a>
+                  <a href=""><i class="ri-facebook-fill"></i></a>
+                  <a href=""><i class="ri-instagram-fill"></i></a>
+                  <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Doctors Section -->
+
+    <!-- ======= Frequently Asked Questions Section ======= -->
+    <section id="faq" class="faq section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Foire aux questions </h2>
+          <p>Voici les questions les plus posées par les utilisateurs de cette plateforme :</p>
+        </div>
+
+        <div class="faq-list">
+          <ul>
+            <li data-aos="fade-up">
+              <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse"
+                href="#faq-list-1">Est-il nécessaire de s'entrainer tout les jours? <i
+                  class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-1" class="collapse show" data-parent=".faq-list">
+                <p>
+                  Recommandé pour un malade cardiaque car elle permet de rendre plus performant le cœur, de le protéger
+                  plus longtemps et de prévenir un nouvel accident cardiaque, à condition de ne pas exagérer
+                  l'entrainement .
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="100">
+              <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" href="#faq-list-2"
+                class="collapsed">Quels sont les symptômes d'un cœur fatigué ? <i
+                  class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-2" class="collapse" data-parent=".faq-list">
+                <p> On cite : Manque d'énergie chronique, difficulté à vous endormir à cause de problèmes de congestion
+                  respiratoire, confusion et/ou troubles de la mémoire , gonflement des pieds et des jambes....
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="200">
+              <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" href="#faq-list-3"
+                class="collapsed">Quel est le meilleur aliment pour le cœur ? <i
+                  class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-3" class="collapse" data-parent=".faq-list">
+                <p> À condition que vous prenez vos précautions de vos allergies . Préférable de prendre les aliments
+                  richie en antioxydants : myrtille et grenade , poissons , l'huile d'olive ...
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="300">
+              <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" href="#faq-list-4"
+                class="collapsed">Quel est la meilleure sport pour le cœur ? <i
+                  class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-4" class="collapse" data-parent=".faq-list">
+                <p>
+                  Les meilleures sports qui vont vous aider à améliorer votre santé, en travaillant le coeur sont les
+                  sports d'endurance, en incluant : la natation, le vélo, la course à pied, le cardio-training en salle…
+                </p>
+              </div>
+            </li>
+
+            <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" href="#faq-list-5"
+                class="collapsed">Est-ce que faire du sport fatigue le cœur ? <i
+                  class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-5" class="collapse" data-parent=".faq-list">
+                <p>
+                  Lorsqu'il est faite du'une manière excessive, entraînant des problèmes cardiovasculaires comme
+                  la fatigue cardiaque, hypertension artérielle, infarctus, etc.
+                </p>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+      </div>
+    </section><!-- End Frequently Asked Questions Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+      <div class="container">
+
+        <div class="owl-carousel testimonials-carousel">
+
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'assets/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img" alt="">
+              <h3>Aymen Maiziz</h3>
+              <h4>Ceo &amp; co-fondateur</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Cette plateforme est créé comme solution pour les patients qui veulent la rapidité des réponses de leurs
+                questions, en assurant la qualité de nos services.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'assets/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img" alt="">
+              <h3>Sohaib Skious</h3>
+              <h4>C.T.O, co-fondateur</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Notre priorité est d'assurer la confidentialité des informations donné par les utilisateurs ,et aussi
+                d'assurer la sécurité de notre platforme.
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'assets/img/testimonials/testimonials-3.jpg' %}" class="testimonial-img" alt="">
+              <h3>Jena Karlis</h3>
+              <h4>Ressource humaines</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                La qualité de nos services est est réalisé en s'assurant que notre équipe est composé des experts
+                compétents availables 24/7
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'assets/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img" alt="">
+              <h3>Dr. Connery</h3>
+              <h4>M.D.</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Représentante de Notre entreprise
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrap">
+            <div class="testimonial-item">
+              <img src="{% static 'assets/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img" alt="">
+              <h3>Dr. mourdi</h3>
+              <h4>Freelancer</h4>
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                Chef du deppartement du devellopement
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Testimonials Section -->
+
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+          <p>Vous pouvez nous contacter à toute moment que vous voulez.</p>
+        </div>
+      </div>
+
+      <div>
+        <iframe style="border:0; width: 100%; height: 350px;"
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6742.692376123079!2d-9.256621261914608!3d32.329414644350734!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdac2179d3de065f%3A0x43a80729afc8aed0!2sPolydisciplinary%20Faculty%20of%20Safi!5e0!3m2!1sen!2sma!4v1620420192570!5m2!1sen!2sma"
+          frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="container">
+        <div class="row mt-5">
+
+          <div class="col-lg-4">
+            <div class="info">
+              <div class="address">
+                <i class="icofont-google-map"></i>
+                <h4>Localisation:</h4>
+                <p>Route Sidi Bouzid BP 4162 Avenue Mohamed Belkhadir, Safi 46000</p>
+              </div>
+
+              <div class="email">
+                <i class="icofont-envelope"></i>
+                <h4>Email:</h4>
+                <p>info@example.com</p>
+              </div>
+
+              <div class="phone">
+                <i class="icofont-phone"></i>
+                <h4>Télephone:</h4>
+                <p>+212 212 121 112</p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-8 mt-5 mt-lg-0">
+
+            <form action='.' method="post" role="form" class="php-email-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-6">
+                  {{ form.nom|as_crispy_field }}
+                </div>
+                <div class="col-6">
+                  {{ form.mail|as_crispy_field }}
+                </div>
+              </div>
+              {{ form.subject|as_crispy_field }}
+              {{ form.message|as_crispy_field }}
+              <div class="mb-3">
+                <div class="error-message"></div>
+                <div class="sent-message">Ton message est bien reçu . Merci!</div>
+              </div>
+              <div class="text-center"><button type="submit">Envoyer Message</button></div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>Udoctor</h3>
+            <p>
+              Route Sidi Bouzid BP <br>
+              4162 Avenue Mohamed Belkhadir,<br>
+              Safi 46000<br>
+              <strong>Télephone:</strong>+212 212 121 112<br>
+              <strong>E-mail:</strong> info@example.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Liens utiles</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="/">Accueil</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#about">à propos</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#services">Services</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#departments">Terms de service</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#doctors">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Nos Services</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#services">Maladies cardiovasculaires</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#services">Éducation thérapeutique</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#services">Nutrition</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#services">Style de vie</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Joindre notre Newsletter</h4>
+            <p>Pour être à jour avec nos nouveautés</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="mr-md-auto text-center text-md-left">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Udoctor</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

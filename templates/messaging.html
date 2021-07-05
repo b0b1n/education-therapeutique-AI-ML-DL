@@ -1,0 +1,21 @@
+{% extends 'forum.html' %}
+{% load crispy_forms_tags %}
+{% block messager %}
+<form class="entrer_message" method="POST"  style=" display: grid; grid-gap : 5px; padding: 30px; ">
+    {% for a in experts %}
+    {% if a.user.id == user.id %}
+    <script>
+        window.document.getElementById("entrer_message").style.display = 'none'
+    </script>
+    {% endif %}
+    {% endfor %}
+    {% csrf_token %}
+    {{form.message|as_crispy_field}}
+    <center><input
+            style="border: 1px solid lightblue; width: 20%; height: 30px; background-color: #87bdd8; color:aliceblue; border-radius: 25px;"
+            type="submit" value="envoyer message">
+    </center>
+
+</form>
+
+{% endblock %}

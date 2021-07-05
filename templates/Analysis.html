@@ -1,0 +1,527 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title> Udoctor </title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    <link href="{% static ' assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+    <link href="{% static 'assets/css/pg_forum.css' %}" rel="stylesheet">
+    <style>
+        .stretch-card>.card {
+            width: 100%;
+            min-width: 100%
+        }
+
+        body {
+            background: linear-gradient(to right, aliceblue, lightblue, aliceblue);
+
+        }
+
+        #main {
+            padding-top: 150px;
+        }
+
+        .flex {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto
+        }
+
+        .padding {
+            padding: 0;
+        }
+
+        .box.box-warning {
+            border-top-color: aquamarine;
+            padding: 15px;
+            padding-bottom: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .box {
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1)
+        }
+
+        .box-header.with-border {
+            border-bottom: 1px solid #f4f4f4
+        }
+
+        .box-header.with-border {
+            border-bottom: 1px solid #f4f4f4
+        }
+
+        .box-header {
+            color: #444;
+            display: block;
+            padding: 10px;
+            position: relative
+        }
+
+        .box-header:before,
+        .box-body:before,
+        .box-footer:before,
+        .box-header:after,
+        .box-body:after,
+        .box-footer:after {
+            content: "";
+            display: table
+        }
+
+        .box-header {
+            color: #444;
+            display: block;
+            padding: 10px;
+            position: relative
+        }
+
+        .box-header>.fa,
+        .box-header>.glyphicon,
+        .box-header>.ion,
+        .box-header .box-title {
+            display: inline-block;
+            font-size: 18px;
+            padding-inline: 10px;
+            line-height: 1
+        }
+
+        .box-header>.box-tools {
+            position: absolute;
+            right: 10px;
+            top: 5px
+        }
+
+        .box-header>.box-tools [data-toggle="tooltip"] {
+            position: relative
+        }
+
+        .bg-yellow,
+        .callout.callout-warning,
+        .alert-warning,
+        .label-warning,
+        .modal-warning .modal-body {
+            background-color: #f39c12 !important
+        }
+
+        .bg-yellow {
+            color: #fff !important
+        }
+
+        .btn {
+            border-radius: 6px;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            border: 1px solid transparent;
+            margin-left: 5px;
+        }
+
+        .btn-box-tool {
+            padding: 5px;
+            font-size: 12px;
+            background: transparent;
+            color: #97a0b3
+        }
+
+        .direct-chat .box-body {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            position: relative;
+            overflow-x: hidden;
+
+            padding: 0
+        }
+
+        .box-body {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            height: 80%;
+        }
+
+        .box-header:before,
+        .box-body:before,
+        .box-footer:before,
+        .box-header:after,
+        .box-body:after,
+        .box-footer:after {
+            content: "";
+            display: table
+        }
+
+        .direct-chat-messages {
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            -o-transform: translate(0, 0);
+            transform: translate(0, 0);
+            padding: 15 px;
+            height: 95%;
+            overflow: auto;
+        }
+
+        .direct-chat-messages,
+        .direct-chat-contacts {
+            -webkit-transition: -webkit-transform .5s ease-in-out;
+            -moz-transition: -moz-transform .5s ease-in-out;
+            -o-transition: -o-transform .5s ease-in-out;
+            transition: transform .5s ease-in-out
+        }
+
+        .direct-chat-msg {
+            margin-bottom: 10px
+        }
+
+        .direct-chat-msg,
+        .direct-chat-text {
+            display: block
+        }
+
+        .direct-chat-info {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 12px
+        }
+
+        .direct-chat-timestamp {
+            color: #999
+        }
+
+        .btn-group-vertical>.btn-group:after,
+        .btn-group-vertical>.btn-group:before,
+        .btn-toolbar:after,
+        .btn-toolbar:before,
+        .clearfix:after,
+        .clearfix:before,
+        .container-fluid:after,
+        .container-fluid:before,
+        .container:after,
+        .container:before,
+        .dl-horizontal dd:after,
+        .dl-horizontal dd:before,
+        .form-horizontal .form-group:after,
+        .form-horizontal .form-group:before,
+        .modal-footer:after,
+        .modal-footer:before,
+        .modal-header:after,
+        .modal-header:before,
+        .nav:after,
+        .nav:before,
+        .navbar-collapse:after,
+        .navbar-collapse:before,
+        .navbar-header:after,
+        .navbar-header:before,
+        .navbar:after,
+        .navbar:before,
+        .pager:after,
+        .pager:before,
+        .panel-body:after,
+        .panel-body:before,
+        .row:after,
+        .row:before {
+            display: table;
+            content: ""
+        }
+
+        .direct-chat-img {
+            border-radius: 50%;
+            float: left;
+            width: 40px;
+            height: 40px
+        }
+
+        .direct-chat-text {
+            border-radius: 5px;
+            position: relative;
+            padding: 5px 10px;
+            background: #73f5e3;
+            margin: 5px 0 0 50px;
+            color: #fff
+        }
+
+        .direct-chat-msg,
+        .direct-chat-text {
+            display: block
+        }
+
+        .direct-chat-text:before {
+            border-width: 6px;
+            margin-top: -6px
+        }
+
+        .direct-chat-text:after,
+        .direct-chat-text:before {
+            position: absolute;
+            right: 100%;
+            top: 15px;
+            content: ' ';
+            height: 0;
+            width: 0;
+            pointer-events: none
+        }
+
+
+        .direct-chat-text:after,
+        .direct-chat-text:before {
+            position: absolute;
+            right: 100%;
+            top: 15px;
+            content: ' ';
+            height: 0;
+            width: 0;
+            pointer-events: none
+        }
+
+        :after,
+        :before {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box
+        }
+
+        .direct-chat-msg:after {
+            clear: both
+        }
+
+        .direct-chat-msg:after {
+            content: "";
+            display: table
+        }
+
+        .direct-chat-info {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 12px
+        }
+
+        .right .direct-chat-img {
+            float: right
+        }
+
+        .direct-chat-warning .right>.direct-chat-text {
+            background: #6cd5ff;
+            color: #fff
+        }
+
+        .right .direct-chat-text {
+            margin-right: 50px;
+            margin-left: 0
+        }
+
+        .box-footer {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top: 1px solid #f4f4f4;
+            padding: 2%;
+            background-color: #fff;
+            bottom: 0px;
+
+        }
+
+        .box-header:before,
+        .box-body:before,
+        .box-footer:before,
+        .box-header:after,
+        .box-body:after,
+        .box-footer:after {
+            content: "";
+            display: table
+        }
+
+        .input-group-btn {
+            position: relative;
+            font-size: 0;
+            white-space: nowrap
+        }
+
+
+        .btn-warning {
+            color: #fff;
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ======= Top Bar ======= -->
+    <div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
+        <div class="container d-flex">
+            <div class="contact-info mr-auto">
+                <i class="icofont-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+                <i class="icofont-phone"></i>+212 212 121 112
+                <i class="icofont-google-map"></i>Route Sidi Bouzid BP 4162 Avenue Mohamed Belkhadir, Safi 46000
+            </div>
+            <div class="social-links">
+                <a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+                <a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+                <a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+                <a href="#" class="skype"><i class="icofont-skype"></i></a>
+                <a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+
+            <h1 class="logo mr-auto"><a href="{% url 'home' %}">Udoctor</a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+            <nav class="nav-menu d-none d-lg-block">
+                <ul>
+                    <li><a href="{% url 'home' %}">Accueil</a></li>
+                    <li><a href="{% url 'accounts:profile' %}">Profil</a></li>
+                    <li><a href="{% url 'forum' %}">forum</a></li>
+                    <li><a href="{% url 'chat' user.id %}">chatbot</a></li>
+					<li class="active"><a href="{% url 'AnalyseData' user.id %}">Cheer-up</a></li>
+                    <li><a href="{% url 'main-view' %}" style="margin-right: 40px;">Quiz</a></li>
+
+                </ul>
+            </nav><!-- .nav-menu -->
+
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'accounts:logout' %}" class="appointment-btn scrollto">Logout</a>
+            {% else %}
+            <a href="{% url 'accounts:login' %}" class="appointment-btn scrollto">login</a>
+            {% endif %}
+
+
+
+            {% if request.user.is_staff %}
+            <a href="{% url 'accounts:register' %}" class="appointment-btn scrollto">Register</a>
+            {% else %}
+
+            {% endif %}
+
+
+
+        </div>
+    </header><!-- End Header -->
+
+
+
+
+
+
+
+    <main id="main">
+        <center>
+            <section class="inner-page" style="padding: 0px; ">
+                <div class="page-content page-container" id="page-content">
+                    <div class="padding">
+                        <div class="row container d-flex justify-content-center">
+                            <div class="col-md-6" style="height: 75vh;">
+                                <form method='POST' style="padding: 0; height: 100%;width: 100%;">
+                                    {% csrf_token %}
+                                    <div class="box box-warning direct-chat direct-chat-warning">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Albert the sentiment Analyzer</h3>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="direct-chat-messages">
+                                                {% for msg in dataAnalyzed %}
+                                                {%if msg.user.user.id == user.id or msg.to.id == user.id %}
+                                                {% if msg.user.user.id == user.id %}
+                                                <div class="direct-chat-msg">
+                                                    <div class="direct-chat-info clearfix"> <span
+                                                            class="direct-chat-name pull-left">{{msg.user.user.first_name}}
+                                                            {{msg.user.user.last_name}}</span> <span
+                                                            class="direct-chat-timestamp pull-right">{{msg.creation_time.date}}</span>
+                                                    </div> <img class="direct-chat-img"
+                                                        src="{% static 'assets/img/userAvatar.jpg' %}"
+                                                        alt="message user image">
+                                                    <div class="direct-chat-text">{{msg.texte}}</div>
+                                                </div>
+                                                {% endif %}
+                                                {%ifequal msg.user pat_a %}
+                                                <div class="direct-chat-msg right">
+                                                    <div class="direct-chat-info clearfix"> <span
+                                                            class="direct-chat-name pull-right">{{msg.user.user.first_name}}
+                                                            {{msg.user.user.last_name}}</span>
+                                                        <span
+                                                            class="direct-chat-timestamp pull-left">{{msg.creation_time.date}}</span>
+                                                    </div> <img class="direct-chat-img"
+                                                        src="{% static 'assets/img/bot.png' %}"
+                                                        alt="message user image">
+                                                    <div class="direct-chat-text">{{msg.texte}}</div>
+                                                </div>
+                                                {% endifequal %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="box-footer">
+                                                <div class="input-group"> <input type="text" name="texte"
+                                                        placeholder="Tapez un Message ..." class="form-control"> <span
+                                                        class="input-group-btn"> <button type="submit"
+                                                            class="btn btn-warning btn-flat">Send</button> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </center>
+
+        </section><!-- End Breadcrumbs Section -->
+
+    </main><!-- End #main -->
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+    <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

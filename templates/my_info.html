@@ -1,0 +1,63 @@
+{% extends 'profil.html' %}
+{% load static %}
+<style>
+    #contenaire {
+        display: grid;
+        border: 1px solid black;
+        width: 40%;
+        padding: 20px;
+        border-radius: 15px;
+        margin: auto;
+        min-width: max-content;
+    }
+
+    #image_container {
+        text-align: center;
+        padding: 10px;
+        background-size: contain ;
+        background-repeat: no-repeat;
+    }
+
+    div>img {
+        width: 150px;
+        height: 150px;
+        border-radius: 75px;
+        border: 1px solid black;
+        margin: 10px;
+    }
+
+    .info {
+        padding: 10px;
+        word-spacing: 20px;
+         margin: 20px;
+    }
+
+    .date {
+        padding: 10px;
+        margin: 20px;
+    }
+</style>
+{% block my_info %}
+<center>
+    <div id="contenaire" style="font-size:x-large;">
+        <div id="image_container" >
+            <img src="{% static 'assets/img/usr_m.png' %}" style="width : 25%; border-radius: 100px;" >
+        </div>
+        <div style="margin: 20px;">
+            <div class="info">
+                Username : {{usrname}}
+            </div>
+            <div class="info" style="margin: 20px;">
+                Nom : {{last}}
+            </div>
+        </div>
+        <div class="info" style="margin: 20px;">
+            Prénom : {{first}}
+        </div>
+        <div class="date" style="margin: 20px;">
+            Né le : {{naissance}}
+        </div>
+    </div>
+    </div>
+</center>
+{% endblock %}

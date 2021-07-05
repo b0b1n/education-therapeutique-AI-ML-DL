@@ -1,0 +1,16 @@
+{% extends 'profil.html' %}
+
+{% block amis %}
+	{% for friend in amis %}
+		{% for cpt in all_amis %}
+			{% if cpt.user.id == friend.son_contact.id %}
+			<p class="des_titres"
+				style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+				<a href="{% url 'forum_a' friend.son_contact.username  %}" style="color: white;">
+					{{friend.son_contact.first_name}} {{friend.son_contact.last_name}}
+				</a>
+			</p>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+{% endblock %}

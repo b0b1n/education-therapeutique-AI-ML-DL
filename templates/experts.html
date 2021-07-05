@@ -1,0 +1,16 @@
+{% extends 'profil.html' %}
+
+{% block experts %}
+	{% for expert in experts %}
+        {% for cpt in all_experts %}
+            {% if cpt.user.id == expert.son_contact.id %}
+	                <p class="des_titres"
+	                	style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+	                	<a href="{% url 'forum_a' expert.son_contact.username  %}" style="color: white;">
+	                		{{expert.son_contact.first_name}} {{expert.son_contact.last_name}} 
+	                	</a>
+	                </p>
+            {% endif %}    
+       {% endfor %}    
+	{% endfor %}
+ {% endblock %}

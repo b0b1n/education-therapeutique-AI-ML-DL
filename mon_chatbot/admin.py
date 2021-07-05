@@ -1,0 +1,6 @@
+from mon_chatbot.models import Temp_Message
+from django.contrib import admin
+from .models import *
+# Register your models here.
+
+admin.site.register(Temp_Message)

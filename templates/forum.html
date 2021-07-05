@@ -1,0 +1,541 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	<title>Forum </title>
+	<meta content="" name="description">
+	<meta content="" name="keywords">
+
+	<!-- Favicons -->
+	<link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+	<link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+	<!-- Google Fonts -->
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
+
+	<!-- Vendor CSS Files -->
+	<link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+	<!-- ajouté pour le spostes-->
+	<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<!-- /ajouté pour le spostes-->
+	<!------ Include the above in your HEAD tag ---------->
+
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+
+	<!-- Template Main CSS File -->
+	<link href="{% static 'assets/css/pg_forum.css' %}" rel="stylesheet">
+	<link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+	<style>
+		.media-body {
+			height: max-content;
+			padding: 10px;
+			align-content: center;
+			border-radius: 0%;
+			padding: 5px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- ======= Top Bar ======= -->
+	<div id="topbar" class="d-none d-lg-flex align-items-center fixed-top">
+		<div class="container d-flex">
+			<div class="contact-info mr-auto">
+				<i class="icofont-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+				<i class="icofont-phone"></i>+212 212 121 112
+				<i class="icofont-google-map"></i>Route Sidi Bouzid BP 4162 Avenue Mohamed Belkhadir, Safi 46000
+			</div>
+			<div class="social-links">
+				<a href="#" class="twitter"><i class="icofont-twitter"></i></a>
+				<a href="#" class="facebook"><i class="icofont-facebook"></i></a>
+				<a href="#" class="instagram"><i class="icofont-instagram"></i></a>
+				<a href="#" class="skype"><i class="icofont-skype"></i></a>
+				<a href="#" class="linkedin"><i class="icofont-linkedin"></i></i></a>
+			</div>
+		</div>
+	</div>
+	<!-- ======= Header ======= -->
+	<header id="header" class="fixed-top">
+		<div class="container d-flex align-items-center">
+
+			<h1 class="logo mr-auto"><a href="{% url 'home' %}">Udoctor</a></h1>
+			<!-- Uncomment below if you prefer to use an image logo -->
+			<!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+			<nav class="nav-menu d-none d-lg-block">
+				<ul>
+					<li ><a href="/">Accueil</a></li>
+					{% if request.user.is_authenticated %}
+					
+					{% if request.user.is_staff %}
+					<li><a href="#about">à propos</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#departments">Départments</a></li>
+					<li><a href="#doctors">Docteurs</a></li>
+					<li><a href="#contact">Contactez-nous</a></li>
+					{%  endif %}
+							  {% for exp in experts %}
+							  {% ifequal user.id exp.user.id %}
+							  <li class="active"><a href="{% url 'forum' %}">forum</a></li>
+							  {% endifequal %}
+							  {% endfor %}
+					{% for pat in patients %}
+					{% ifequal user.id pat.user.id %}
+					<li><a href="{% url 'accounts:profile' %}">Profil</a></li>
+					<li class="active"><a href="{% url 'forum' %}">forum</a></li>
+					<li><a href="{% url 'chat' user.id %}">chatbot</a></li>
+					<li><a href="{% url 'AnalyseData' user.id %}">Cheer-up</a></li>
+					<li><a href="{% url 'main-view' %}" style="margin-right: 40px;">Quiz</a></li>
+					{% endifequal %}
+					{% endfor %}
+					{%else%}
+					<li><a href="#about">à propos</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#departments">Départments</a></li>
+					<li><a href="#doctors">Docteurs</a></li>
+					<li><a href="#contact">Contactez-nous</a></li>
+					{% endif %}
+		  
+		  
+				  </ul>
+			</nav><!-- .nav-menu -->
+
+			{% if request.user.is_authenticated %}
+			<a href="{% url 'accounts:logout' %}" class="appointment-btn scrollto">Logout</a>
+			{% else %}
+			<a href="{% url 'accounts:login' %}" class="appointment-btn scrollto">login</a>
+			{% endif %}
+
+
+
+			{% if request.user.is_staff %}
+			<a href="{% url 'accounts:register' %}" class="appointment-btn scrollto">Register</a>
+			{% else %}
+
+			{% endif %}
+
+
+
+		</div>
+	</header><!-- End Header -->
+
+	<main id="main">
+
+		<!-- ======= Breadcrumbs Section ======= -->
+		<section class="breadcrumbs">
+			<div class="container">
+				<div class="d-flex justify-content-between align-items-center">
+					<ol>
+						<li><a href="{% url 'home' %}">Accueil</a></li>
+						<li>Forum du discussion</li>
+					</ol>
+				</div>
+
+			</div>
+		</section><!-- End Breadcrumbs Section -->
+
+		<section class="inner-page" style="background-color:aliceblue;">
+			<div class="container">
+				<!-- Zone du profil  -->
+				<section id="contenaire" class="departments">
+					<div class="container">
+
+						<div class="row">
+							<div class="zone-gauche" style="overflow: auto;">
+								<div id="utilisateur-courant" style="text-align: center;">
+									<!-- le cas où l'utilisateur est : expert-->
+									{% for utilisateur in experts %}
+									{% if utilisateur.user.id == user.id %}
+									<p>
+									<h4>{{utilisateur.user.first_name}} {{utilisateur.user.last_name}}</h4>
+									</p>
+									<p>
+										<b>e-mail </b>: {{utilisateur.user.email}}
+									</p>
+									<p>
+										<b>tel </b>: {{utilisateur.tel}}
+									</p>
+									<p>
+										<b>date jointure </b>: {{utilisateur.user.date_joined.date}}
+									</p>
+									{% endif %}
+									{% endfor %}
+									<!-- le cas où l'utilisateur est : patient-->
+									{% for utilisateur in patients %}
+									{% if utilisateur.user.id == user.id %}
+									<p>
+									<h4>{{utilisateur.user.first_name}} {{utilisateur.user.last_name}}</h4>
+									</p>
+									<p>
+										<b>e-mail </b>: {{utilisateur.user.email}}
+									</p>
+									<p>
+										<b>tel </b>: {{utilisateur.tel}}
+									</p>
+									<p>
+										<b>date jointure </b>: {{utilisateur.user.date_joined.date}}
+									</p>
+									{% endif %}
+									{% endfor %}
+								</div>
+								<div id="choisir">
+									<h5><b>
+											<p class="des_titres"
+												style="color:black; background-image: linear-gradient(to right,#87bdd8 , #b7e8dd ); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+												Groupes</p>
+										</b></h5>
+
+
+
+									<!-- le cas où l'utilisateur est : patient -->
+
+									{% for utilisateur in patients %}
+									{% ifequal utilisateur.user.id user.id %}
+									{% for indice in est_membre %}
+									{% ifequal indice.pat.user.id user.id %}
+									<p class="des_titres"
+										style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+										<a href="{% url 'forum_g' indice.grp.id  %}" style="color: white;">
+											{{indice.grp.nomGroup}}
+										</a>
+									</p>
+									{% endifequal %}
+									{% endfor %}
+
+									{% endifequal %}
+									{% endfor %}
+
+
+
+									<!-- le cas où l'utilisateur est : expert-->
+
+
+									{% for utilisateur in experts %}
+									{% if utilisateur.user.id == user.id %}
+									{% for grp in rooms %}
+									<p class="des_titres"
+										style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+										<a href="{% url 'forum_p' grp.id user.id %}" style="color: white;">
+											{{grp.nomGroup}}
+										</a>
+									</p>
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+
+
+									{% for utilisateur in patients %}
+									{% if utilisateur.user.id == user.id %}
+
+									<h5><b>
+											<p class="des_titres"
+												style=" color:black; background-image: linear-gradient(to right,#87bdd8 , #b7d7e8 ); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+												Parler avec mes experts</p>
+										</b></h5>
+									<!-- -->
+
+									<!-- à ajouter les experts de l'utilisateur-->
+									{% for friend in relation %}
+									{% if friend.util_connecte.user.id == user.id %}
+									{% for ami_util in experts %}
+									{% if friend.son_contact.id == ami_util.user.id %}
+									<p class="des_titres"
+										style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+										<a href="{% url 'forum_m' ami_util.user.username user.id %}" style="color: white;">
+											{{ami_util.user.username}}
+										</a>
+									</p>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+
+
+
+
+									<!-- montrer les amies du patient-->
+									<h5><b>
+											<p class="des_titres"
+												style=" color:black; background-image: linear-gradient(to right,#87bdd8 , #b7d7e8 ); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+												Parler avec mes amies </p>
+										</b></h5>
+									{% for friend in relation %}
+									{% if friend.util_connecte.user.id == user.id %}
+									{% for ami_util in patients %}
+									{% if friend.son_contact.id == ami_util.user.id %}
+									<p class="des_titres"
+										style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+										<a href="{% url 'forum_m' ami_util.user.username user.id %}" style="color: white;">
+											{{ami_util.user.username}}
+										</a>
+									</p>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+
+									{% endif %}
+									{% endfor %}
+
+									{% for utilisateur in experts %}
+									{% if utilisateur.user.id == user.id %}
+									<h5>
+										<b>
+											<p class="des_titres"
+												style=" color:black; background-image: linear-gradient(to right,#87bdd8 , #b7d7e8 ); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+												Mes patients
+											</p>
+										</b>
+									</h5>
+									{% for pat in a_contact %}
+									{% if pat.son_contact.id == utilisateur.user.id %}
+									<p class="des_titres"
+										style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+										<a href="{% url 'forum_m' pat.util_connecte.user.username user.id %}" style="color: white;">
+											{{pat.util_connecte.user.username}}
+										</a>
+									</p>
+									{% endif %}
+									{% endfor %}
+
+
+									<center>
+										<button onclick="poster_post()"
+											style="text-align:  center; border: 1px solid lightblue; width: 80%; height: 30px; background-color: #87bdd8; color:aliceblue; border-radius: 25px; margin-bottom: 20px;">ajouter
+											poste</button>
+									</center>
+									{% endif %}
+									{% endfor %}
+
+								</div>
+
+							</div>
+
+
+							<div class="col-lg-9 mt-4 mt-lg-0" style="box-shadow: 10px 10px 10px lightblue;">
+								<div class="display_content" id="zone_room">
+									<!-- Si l'utilisateur veut voir les postes de groupes clickés-->
+									<!-- ensemble des postes -->
+									{% for pub in publications %}
+									{%if pub.publie_dans.id == grp_selectionne.id %}
+									<div class="media-body">
+
+										<center>
+											<b>
+												<h4 class="media-heading">{{pub.poste_publie.titre}}</h4>
+											</b>
+										</center>
+										<ul class="list-inline list-unstyled">
+											<li><span><i class="glyphicon glyphicon-calendar"></i>
+													{{pub.poste_publie.date.date}}
+												</span></li>
+										</ul>
+										<p>{{pub.poste_publie.contenu}}</p>
+										<p class="text-right">
+											publié par : {{pub.poste_publie.publie_par.user.first_name}}
+											{{pub.poste_publie.publie_par.user.last_name}}
+										</p>
+									</div>
+									{% endif %}
+									{% endfor %}
+
+									<!-- Si l'utilisateur est un expert -->
+									<!-- il peut publier un poste -->
+									<form id="entrer_text" method="POST" action=""
+										style=" display: none; grid-gap : 5px; padding: 30px; ">
+										{% csrf_token %}
+										{{form}}
+										<center><input
+												style="border: 1px solid lightblue; width: 20%; height: 30px; background-color: #87bdd8; color:aliceblue; border-radius: 25px;"
+												type="submit" value="poster">
+										</center>
+									</form>
+
+									{% for messg in messages %}
+									{% if messg.connection.util_connecte.user.id == user.id and messg.connection.son_contact.id == contact_selectionne.id %}
+									<div class="media-body" style="padding : 15px;" id="{{messg.id}}">
+										{% if messg.connecte_a_contact == True %}
+										<script>
+											window.document.getElementById("{{messg.id}}").style.background = 'linear-gradient(to right,aliceblue , #b7e8dd )';
+										</script>
+										{% else %}
+										<script>
+											window.document.getElementById("{{messg.id}}").style.background = 'linear-gradient(to right,#87bdd8 , #b7e8dd )';
+										</script>
+										{% endif %}
+										<ul class="list-inline list-unstyled"
+											style="text-align: center; padding: auto;	">
+											<li><span><i class="glyphicon glyphicon-calendar"></i>
+													{{messg.date_envoi}}
+												</span></li>
+										</ul>
+										<div
+											style="height: max-content; width: 100%; padding:inherit; font-family: 'Courier New', Courier, monospace; font-size:medium; font-weight: bold;">
+											{{messg.msg}}
+										</div>
+									</div>
+									{% endif %}
+									{% if messg.connection.son_contact.id == user.id and messg.connection.util_connecte.user.id == contact_selectionne.id %}
+									<div class="media-body" style="padding : 15px;" id="{{messg.id}}">
+										{% if messg.connecte_a_contact == True %}
+										<script>
+											window.document.getElementById("{{messg.id}}").style.background = 'linear-gradient(to right,aliceblue , #b7e8dd )';
+										</script>
+										{% else %}
+										<script>
+											window.document.getElementById("{{messg.id}}").style.background = 'linear-gradient(to right,#87bdd8 , #b7e8dd )';
+										</script>
+										{% endif %}
+										<ul class="list-inline list-unstyled"
+											style="text-align: center; padding: auto;	">
+											<li><span><i class="glyphicon glyphicon-calendar"></i>
+													{{messg.date_envoi}}
+												</span></li>
+										</ul>
+										<div
+											style="height: max-content; width: 100%; padding:inherit; font-family: 'Courier New', Courier, monospace; font-size:medium; font-weight: bold;">
+											{{messg.msg}}
+										</div>
+									</div>
+
+									{% endif %}
+									{% endfor %}
+
+									{% block messager %}
+									{% endblock %}
+								</div>
+
+
+							</div>
+
+
+						</div>
+
+				</section><!-- End Departments Section -->
+
+			</div>
+		</section>
+
+	</main><!-- End #main -->
+
+	<!-- ======= Footer ======= -->
+	<footer id="footer">
+
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-3 col-md-6 footer-contact">
+						<h3>Udoctor</h3>
+						<p>
+							Route Sidi Bouzid BP <br>
+							4162 Avenue Mohamed Belkhadir,<br>
+							Safi 46000<br>
+							<strong>Télephone:</strong>+212 212 121 112<br>
+							<strong>E-mail:</strong> info@example.com<br>
+						</p>
+					</div>
+
+					<div class="col-lg-2 col-md-6 footer-links">
+						<h4>Liens utiles</h4>
+						<ul>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Accueil</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">à propos</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Terms de service</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-3 col-md-6 footer-links">
+						<h4>Nos Services</h4>
+						<ul>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-4 col-md-6 footer-newsletter">
+						<h4>Joindre notre Newsletter</h4>
+						<p>Pour être à jour avec nos nouveautés</p>
+						<form action="" method="post">
+							<input type="email" name="email"><input type="submit" value="Subscribe">
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="container d-md-flex py-4">
+
+			<div class="mr-md-auto text-center text-md-left">
+				<div class="copyright">
+					&copy; Copyright <strong><span>Udoctor</span></strong>. All Rights Reserved
+				</div>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+					Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+				</div>
+			</div>
+			<div class="social-links text-center text-md-right pt-3 pt-md-0">
+				<a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+				<a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+				<a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+				<a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+				<a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+			</div>
+		</div>
+	</footer><!-- End Footer -->
+
+	<div id="preloader"></div>
+	<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+	<script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js' %}"></script>
+
+	<!-- Template Main JS File -->
+	<script src="{% static 'assets/js/main.js' %}"></script>
+	<script>
+		function poster_post() {
+			if (window.document.getElementById("entrer_text").style.display === 'none') {
+				window.document.getElementById("entrer_text").style.display = 'grid';
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>

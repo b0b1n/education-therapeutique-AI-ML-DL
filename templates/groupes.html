@@ -1,0 +1,12 @@
+{% extends 'profil.html' %}
+
+{% block groupes %}
+	{% for grp in groupes %}
+			<p class="des_titres"
+				style=" color:#f0f8ff; background-image: linear-gradient(to right, #3f98fd, aliceblue); padding-top: 10px; padding-bottom: 10px; padding-left: 25px;">
+				<a href="{% url 'forum_g' grp.id  %}" style="color: white;">
+					{{grp.grp.nomGroup}} 
+				</a>
+			</p>
+	{% endfor %}
+{% endblock %}
